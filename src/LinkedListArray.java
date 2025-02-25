@@ -15,7 +15,7 @@ public class LinkedListArray {
     }
 
     public void add(Board board) {
-        int index = board.value();
+        int index = board.value;
         array[index].add(board);
         min = Math.min(min, index);
         size++;

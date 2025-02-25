@@ -95,6 +95,6 @@ class Node {
 
     public Node(Board board) {
         this.board = board;
-        this.value = board.value();
+        this.value = board.value;
     }
 }

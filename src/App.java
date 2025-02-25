@@ -3,28 +3,29 @@ import java.util.PriorityQueue;
 
 public class App {
     public static void main(String[] args) throws Exception {
+        BoardManager manager = new BoardManager(4, 4);
         Board board = new Board(4, 4);
-        System.out.println(board);
-        board.randomize();
-        System.out.println(board);
-        greedyBestFirst(board);
+        System.out.println(manager.toString(board));
+        manager.randomize(board);
+        System.out.println(manager.toString(board));
+        greedyBestFirst(manager, board);
     }
 
-    public static void greedyBestFirst(Board board) {
+    public static void greedyBestFirst(BoardManager manager, Board board) {
         LinkedListArray queue = new LinkedListArray(1000);
         queue.add(board);
         // PriorityQueue<Board> queue = new PriorityQueue<>(Comparator.comparingInt(Board::value));
         // queue.add(board);
         while (!queue.isEmpty()) {
             Board current = queue.poll();
-            if (current.solved()) {
-                System.out.println(current);
+            if (manager.solved(current)) {
+                System.out.println(manager.toString(current));
                 System.out.println("Solved with " + current.move + " moves");
                 System.out.println("Frontier: " + queue.size());
                 return;
             }
-            for (int move : current.moves[current.empty]) {
-                Board next = current.createBoardByMove(move);
+            for (int move : manager.moves[current.empty]) {
+                Board next = manager.createBoardByMove(current, move);
                 if (next == null) {
                     continue;
                 }
