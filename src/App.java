@@ -11,8 +11,10 @@ public class App {
     }
 
     public static void greedyBestFirst(Board board) {
-        PriorityQueue<Board> queue = new PriorityQueue<>(Comparator.comparingInt(Board::value));
+        LinkedListArray queue = new LinkedListArray(1000);
         queue.add(board);
+        // PriorityQueue<Board> queue = new PriorityQueue<>(Comparator.comparingInt(Board::value));
+        // queue.add(board);
         while (!queue.isEmpty()) {
             Board current = queue.poll();
             if (current.solved()) {
@@ -27,12 +29,12 @@ public class App {
                     continue;
                 }
                 queue.add(next);
-                if (queue.size() > 10000000) {
-                    System.out.println("No solution found");
+                if (queue.size() > 100000000) {
+                    System.out.println("No solution found (queue size exceeded)");
                     System.exit(0);
                 }
             }
         }
-        System.out.println("No solution found");
+        System.out.println("No solution found (queue empty)");
     }
 }
