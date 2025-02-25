@@ -1,9 +1,11 @@
-public class PriorityLinkedList {
+public class CappedPriorityLinkedList {
     Node head;
     Node tail;
     int size;
+    int cap = 1000;
+    int removed = -1;
 
-    public PriorityLinkedList() {
+    public CappedPriorityLinkedList() {
         head = null;
         tail = null;
         size = 0;
@@ -11,6 +13,16 @@ public class PriorityLinkedList {
 
     public void add(Board board) {
         Node node = new Node(board);
+        if (node.value >= removed && removed != -1) {
+            return;
+        }
+        if (size >= cap && tail != null && node.value >= tail.value) {
+            removed = Math.min(removed, node.value);
+            return;
+        }
+        if (tail == null) {
+            System.out.println("Warning: Tail is null");
+        }
         if (head == null) {
             head = node;
             tail = node;
@@ -39,6 +51,12 @@ public class PriorityLinkedList {
             }
         }
         size++;
+        if (size > cap) {
+            removed = Math.min(removed, tail.value);
+            tail = tail.prev;
+            tail.next = null;
+            size--;
+        }
     }
 
     public Board poll() {
@@ -53,6 +71,9 @@ public class PriorityLinkedList {
             tail = null;
         }
         size--;
+        if (node.value >= removed && removed != -1) {
+            System.out.println("Warning: Polling higher value than removed" + node.value + " " + removed);
+        }
         return node.board;
     }
 
