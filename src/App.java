@@ -3,7 +3,7 @@ import java.util.PriorityQueue;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        Board board = new Board(3, 4);
+        Board board = new Board(4, 4);
         System.out.println(board);
         board.randomize();
         System.out.println(board);
@@ -11,7 +11,7 @@ public class App {
     }
 
     public static void greedyBestFirst(Board board) {
-        PriorityQueue<Board> queue = new PriorityQueue<>(Comparator.comparingInt(Board::heuristics2));
+        PriorityQueue<Board> queue = new PriorityQueue<>(Comparator.comparingInt(Board::value));
         queue.add(board);
         while (!queue.isEmpty()) {
             Board current = queue.poll();
@@ -21,11 +21,13 @@ public class App {
                 System.out.println("Frontier: " + queue.size());
                 return;
             }
-            for (int move : current.possibleMoves()) {
-                Board next = new Board(current);
-                next.move(move);
+            for (int move : current.moves[current.empty]) {
+                Board next = current.createBoardByMove(move);
+                if (next == null) {
+                    continue;
+                }
                 queue.add(next);
-                if (queue.size() > 1000000) {
+                if (queue.size() > 10000000) {
                     System.out.println("No solution found");
                     System.exit(0);
                 }

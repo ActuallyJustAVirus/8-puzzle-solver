@@ -5,6 +5,7 @@ public class Board {
     int lastMove;
     int x;
     int y;
+    int value;
     
     final int[][] moves;
     final byte[][] distances;
@@ -68,24 +69,22 @@ public class Board {
         return moves;
     }
 
-    public void move(int i) {
+    public Board createBoardByMove(int i) {
+        if (i == lastMove) {
+            return null;
+        }
+        Board next = new Board(this);
+        next.move(i);
+        next.heuristics2();
+        return next;
+    }
+
+    private void move(int i) {
         board[empty] = board[i];
         // board[i] = 0;
         lastMove = empty;
         empty = i;
         move++;
-    }
-
-    public int[] possibleMoves() {
-        int[] possibleMoves = moves[empty];
-        int[] result = new int[possibleMoves.length - 1];
-        for (int i = 0, j = 0; i < possibleMoves.length; i++) {
-            if (possibleMoves[i] == lastMove) {
-                continue;
-            }
-            result[j++] = possibleMoves[i];
-        }
-        return result;
     }
 
     public void randomize() {
@@ -118,7 +117,12 @@ public class Board {
             }
             result += distances[i][board[i] + 128];
         }
-        return result + move;
+        value = result + move;
+        return result;
+    }
+
+    public int value() {
+        return value;
     }
 
     public boolean solved() {
