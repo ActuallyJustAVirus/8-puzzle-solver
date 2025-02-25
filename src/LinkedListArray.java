@@ -4,6 +4,8 @@ public class LinkedListArray {
     LinkedList<Board>[] array;
     int min;
     int size;
+    int cap = 10000000;
+    int removeThreshold;
 
     public LinkedListArray(int length) {
         array = new LinkedList[length];
@@ -11,14 +13,24 @@ public class LinkedListArray {
             array[i] = new LinkedList<>();
         }
         min = length;
+        removeThreshold = length;
         size = 0;
     }
 
     public void add(Board board) {
         int index = board.value;
+        if (index >= removeThreshold) {
+            return;
+        }
         array[index].add(board);
         min = Math.min(min, index);
         size++;
+        while (size > cap) {
+            size -= array[--removeThreshold].size();
+            array[removeThreshold].clear();
+            // System.gc();
+            System.out.println("Removed " + removeThreshold);
+        }
     }
 
     public Board poll() {
