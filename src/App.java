@@ -7,23 +7,28 @@ public class App {
         System.out.println(board);
         board.randomize();
         System.out.println(board);
-        greetyBestFirst(board);
+        greedyBestFirst(board);
     }
 
-    public static void greetyBestFirst(Board board) {
+    public static void greedyBestFirst(Board board) {
         PriorityQueue<Board> queue = new PriorityQueue<>(Comparator.comparingInt(Board::heuristics2));
         queue.add(board);
         while (!queue.isEmpty()) {
             Board current = queue.poll();
             if (current.solved()) {
                 System.out.println(current);
-                current.printMoves();
+                System.out.println("Solved with " + current.move + " moves");
+                System.out.println("Frontier: " + queue.size());
                 return;
             }
-            for (int move : Board.moves[current.empty]) {
+            for (byte move : current.possibleMoves()) {
                 Board next = new Board(current);
                 next.move(move);
                 queue.add(next);
+                if (queue.size() > 10000000) {
+                    System.out.println("No solution found");
+                    System.exit(0);
+                }
             }
         }
         System.out.println("No solution found");

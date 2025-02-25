@@ -1,8 +1,10 @@
 public class Board {
-    int[] board = {1, 2, 3, 4, 5, 6, 7, 8, 0};
-    int empty = 8;
+    byte[] board = {1, 2, 3, 4, 5, 6, 7, 8, 0};
+    byte empty = 8;
     int move = 0;
-    final static int[][] moves = {
+    byte lastMove = -1;
+    
+    final static byte[][] moves = {
         {1, 3},
         {0, 2, 4},
         {1, 5},
@@ -13,7 +15,7 @@ public class Board {
         {4, 6, 8},
         {5, 7}
     };
-    final static int[][] distances = {
+    final static byte[][] distances = {
         {0, 1, 2, 1, 2, 3, 2, 3, 4},
         {1, 0, 1, 2, 1, 2, 3, 2, 3},
         {2, 1, 0, 3, 2, 1, 4, 3, 2},
@@ -25,15 +27,10 @@ public class Board {
         {4, 3, 2, 3, 2, 1, 2, 1, 0}
     };
 
-    int h1 = 0;
-    boolean h1Calculated = false;
-    int h2 = 0;
-    boolean h2Calculated = false;
-
     public Board() {
     }
 
-    public Board(int[] board, int empty) {
+    public Board(byte[] board, byte empty) {
         this.board = board;
         this.empty = empty;
     }
@@ -44,28 +41,36 @@ public class Board {
         this.move = board.move;
     }
 
-    public void move(int i) {
+    public void move(byte i) {
         board[empty] = board[i];
-        // board[i] = 0;
+        board[i] = 0;
+        lastMove = empty;
         empty = i;
         move++;
-        h1Calculated = false;
-        h2Calculated = false;
+    }
+
+    public byte[] possibleMoves() {
+        byte[] possibleMoves = moves[empty];
+        byte[] result = new byte[possibleMoves.length - 1];
+        for (int i = 0, j = 0; i < possibleMoves.length; i++) {
+            if (possibleMoves[i] == lastMove) {
+                continue;
+            }
+            result[j++] = possibleMoves[i];
+        }
+        return result;
     }
 
     public void randomize() {
-        for (int i = 0; i < 100; i++) {
-            int[] possibleMoves = moves[empty];
-            int move = possibleMoves[(int) (Math.random() * possibleMoves.length)];
+        for (int i = 0; i < 1000; i++) {
+            byte[] possibleMoves = moves[empty];
+            byte move = possibleMoves[(int) (Math.random() * possibleMoves.length)];
             move(move);
         }
         this.move = 0;
     }
 
     public int heuristics1() {
-        if (h1Calculated) {
-            return h1;
-        }
         int result = 8;
         for (int i = 0; i < board.length; i++) {
             if (i == empty) {
@@ -75,14 +80,10 @@ public class Board {
                 result--;
             }
         }
-        h1 = result;
         return result;
     }
 
     public int heuristics2() {
-        if (h2Calculated) {
-            return h2;
-        }
         int result = 0;
         for (int i = 0; i < board.length; i++) {
             if (i == empty) {
@@ -90,8 +91,7 @@ public class Board {
             }
             result += distances[i][board[i] - 1];
         }
-        h2 = result;
-        return result;
+        return result + move;
     }
 
     public boolean solved() {
