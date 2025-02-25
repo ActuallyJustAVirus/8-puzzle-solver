@@ -1,57 +1,84 @@
 public class Board {
-    byte[] board = {1, 2, 3, 4, 5, 6, 7, 8, 0};
-    byte empty = 8;
+    byte[] board;
+    int empty;
     int move = 0;
-    byte lastMove = -1;
+    int lastMove;
+    int x;
+    int y;
     
-    final static byte[][] moves = {
-        {1, 3},
-        {0, 2, 4},
-        {1, 5},
-        {0, 4, 6},
-        {1, 3, 5, 7},
-        {2, 4, 8},
-        {3, 7},
-        {4, 6, 8},
-        {5, 7}
-    };
-    final static byte[][] distances = {
-        {0, 1, 2, 1, 2, 3, 2, 3, 4},
-        {1, 0, 1, 2, 1, 2, 3, 2, 3},
-        {2, 1, 0, 3, 2, 1, 4, 3, 2},
-        {1, 2, 3, 0, 1, 2, 1, 2, 3},
-        {2, 1, 2, 1, 0, 1, 2, 1, 2},
-        {3, 2, 1, 2, 1, 0, 3, 2, 1},
-        {2, 3, 4, 1, 2, 3, 0, 1, 2},
-        {3, 2, 3, 2, 1, 2, 1, 0, 1},
-        {4, 3, 2, 3, 2, 1, 2, 1, 0}
-    };
+    final int[][] moves;
+    final byte[][] distances;
 
-    public Board() {
-    }
-
-    public Board(byte[] board, byte empty) {
-        this.board = board;
-        this.empty = empty;
+    public Board(int x, int y) {
+        this.x = x;
+        this.y = y;
+        this.distances = calculateDistances();
+        this.moves = calculateMoves();
+        this.board = new byte[x * y];
+        byte brick = Byte.MIN_VALUE;
+        for (int i = 0; i < board.length; i++) {
+            board[i] = brick++;
+        }
+        this.empty = (byte) (x * y - 1);
+        this.lastMove = empty;
     }
 
     public Board(Board board) {
         this.board = board.board.clone();
         this.empty = board.empty;
         this.move = board.move;
+        this.lastMove = board.lastMove;
+        this.x = board.x;
+        this.y = board.y;
+        this.moves = board.moves;
+        this.distances = board.distances;
     }
 
-    public void move(byte i) {
+    private byte[][] calculateDistances() {
+        byte[][] distances = new byte[x * y][x * y];
+        for (int i = 0; i < distances.length; i++) {
+            for (int j = 0; j < distances[i].length; j++) {
+                distances[i][j] = (byte) (Math.abs(i % x - j % x) + Math.abs(i / x - j / x));
+            }
+        }
+        return distances;
+    }
+
+    private int[][] calculateMoves() {
+        int[][] moves = new int[x * y][];
+        for (int i = 0; i < moves.length; i++) {
+            int[] buffer = new int[4];
+            int count = 0;
+            if (i % x > 0) {
+                buffer[count++] = i - 1;
+            }
+            if (i % x < x - 1) {
+                buffer[count++] = i + 1;
+            }
+            if (i / x > 0) {
+                buffer[count++] = i - x;
+            }
+            if (i / x < y - 1) {
+                buffer[count++] = i + x;
+            }
+            int[] result = new int[count];
+            System.arraycopy(buffer, 0, result, 0, count);
+            moves[i] = result;
+        }
+        return moves;
+    }
+
+    public void move(int i) {
         board[empty] = board[i];
-        board[i] = 0;
+        // board[i] = 0;
         lastMove = empty;
         empty = i;
         move++;
     }
 
-    public byte[] possibleMoves() {
-        byte[] possibleMoves = moves[empty];
-        byte[] result = new byte[possibleMoves.length - 1];
+    public int[] possibleMoves() {
+        int[] possibleMoves = moves[empty];
+        int[] result = new int[possibleMoves.length - 1];
         for (int i = 0, j = 0; i < possibleMoves.length; i++) {
             if (possibleMoves[i] == lastMove) {
                 continue;
@@ -63,20 +90,20 @@ public class Board {
 
     public void randomize() {
         for (int i = 0; i < 1000; i++) {
-            byte[] possibleMoves = moves[empty];
-            byte move = possibleMoves[(int) (Math.random() * possibleMoves.length)];
+            int[] possibleMoves = moves[empty];
+            int move = possibleMoves[(int) (Math.random() * possibleMoves.length)];
             move(move);
         }
         this.move = 0;
     }
 
     public int heuristics1() {
-        int result = 8;
+        int result = board.length - 1;
         for (int i = 0; i < board.length; i++) {
             if (i == empty) {
                 continue;
             }
-            if (board[i] == i + 1) {
+            if (board[i] == i - 128) {
                 result--;
             }
         }
@@ -89,7 +116,7 @@ public class Board {
             if (i == empty) {
                 continue;
             }
-            result += distances[i][board[i] - 1];
+            result += distances[i][board[i] + 128];
         }
         return result + move;
     }
@@ -101,15 +128,13 @@ public class Board {
     @Override
     public String toString() {
         board[empty] = 0;
-        return String.format(
-            "%d %d %d\n%d %d %d\n%d %d %d\n",
-            board[0], board[1], board[2],
-            board[3], board[4], board[5],
-            board[6], board[7], board[8]
-        );
-    }
-
-    public void printMoves() {
-        System.out.println("Moves: " + move);
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < board.length; i++) {
+            if (i % x == 0) {
+                builder.append("\n");
+            }
+            builder.append(String.format("%3d", board[i]));
+        }
+        return builder.toString();
     }
 }

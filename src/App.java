@@ -3,7 +3,7 @@ import java.util.PriorityQueue;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        Board board = new Board();
+        Board board = new Board(3, 4);
         System.out.println(board);
         board.randomize();
         System.out.println(board);
@@ -21,11 +21,11 @@ public class App {
                 System.out.println("Frontier: " + queue.size());
                 return;
             }
-            for (byte move : current.possibleMoves()) {
+            for (int move : current.possibleMoves()) {
                 Board next = new Board(current);
                 next.move(move);
                 queue.add(next);
-                if (queue.size() > 10000000) {
+                if (queue.size() > 1000000) {
                     System.out.println("No solution found");
                     System.exit(0);
                 }
