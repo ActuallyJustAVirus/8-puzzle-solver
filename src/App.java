@@ -28,10 +28,17 @@ public class App {
                 System.out.println(manager.toString(recreated));
                 return;
             }
-            for (int move : manager.moves[current.empty]) {
-                Board next = manager.createBoardByMove(current, move);
-                if (next == null) {
+            int[] possibleMoves = manager.moves[current.empty];
+            for (int i = 0; i < possibleMoves.length; i++) {
+                int move = possibleMoves[i];
+                if (move == current.lastMove) {
                     continue;
+                }
+                Board next = current;
+                if (i == possibleMoves.length - 1) {
+                    manager.makeMove(next, move);
+                } else {
+                    next = manager.createBoardByMove(current, move);
                 }
                 queue.add(next);
                 if (queue.size() > 100000000) {

@@ -47,13 +47,14 @@ public class BoardManager {
     }
 
     public Board createBoardByMove(Board board, int i) {
-        if (i == board.lastMove) {
-            return null;
-        }
         Board next = new Board(board);
-        next.move(i);
-        heuristics2(next);
+        makeMove(next, i);
         return next;
+    }
+
+    public void makeMove(Board board, int i) {
+        board.move(i);
+        heuristics2(board);
     }
 
     public int heuristics1(Board board) {
