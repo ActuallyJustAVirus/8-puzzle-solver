@@ -4,7 +4,7 @@ public class LinkedListArray {
     LinkedList<Board>[] array;
     int min;
     int size;
-    int cap = 10000000;
+    int cap = 2500000;
     int removeThreshold;
 
     public LinkedListArray(int length) {
@@ -27,9 +27,13 @@ public class LinkedListArray {
         size++;
         while (size > cap) {
             size -= array[--removeThreshold].size();
+            if (size > cap) {
+                continue;
+            }
             array[removeThreshold].clear();
-            // System.gc();
+            System.gc();
             System.out.println("Removed " + removeThreshold);
+            System.out.println("Size: " + size);
         }
     }
 
