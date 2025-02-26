@@ -22,6 +22,10 @@ public class App {
                 System.out.println(manager.toString(current));
                 System.out.println("Solved with " + current.move + " moves");
                 System.out.println("Frontier: " + queue.size());
+
+                System.out.println("Recreating board");
+                Board recreated = current.moveList.recreateBoard(manager, board);
+                System.out.println(manager.toString(recreated));
                 return;
             }
             for (int move : manager.moves[current.empty]) {

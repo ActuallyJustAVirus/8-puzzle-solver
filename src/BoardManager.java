@@ -51,17 +51,9 @@ public class BoardManager {
             return null;
         }
         Board next = new Board(board);
-        move(next, i);
+        next.move(i);
         heuristics2(next);
         return next;
-    }
-
-    void move(Board board, int i) {
-        board.board[board.empty] = board.board[i];
-        // board[i] = 0;
-        board.lastMove = board.empty;
-        board.empty = i;
-        board.move++;
     }
 
     public int heuristics1(Board board) {
@@ -97,9 +89,11 @@ public class BoardManager {
         for (int i = 0; i < 1000; i++) {
             int[] possibleMoves = moves[board.empty];
             int move = possibleMoves[(int) (Math.random() * possibleMoves.length)];
-            move(board, move);
+            board.move(move);
         }
         board.move = 0;
+        board.value = heuristics2(board);
+        board.moveList = null;
     }
 
     public String toString(Board board) {

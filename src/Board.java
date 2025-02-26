@@ -4,6 +4,7 @@ public class Board {
     int move = 0;
     int lastMove;
     int value;
+    Move moveList;
 
     public Board(int x, int y) {
         this.board = new byte[x * y];
@@ -20,5 +21,16 @@ public class Board {
         this.empty = board.empty;
         this.move = board.move;
         this.lastMove = board.lastMove;
+        this.value = board.value;
+        this.moveList = board.moveList;
+    }
+
+    void move(int i) {
+        board[empty] = board[i];
+        // board[i] = 0;
+        lastMove = empty;
+        empty = i;
+        move++;
+        moveList = new Move(moveList, (byte) i);
     }
 }
