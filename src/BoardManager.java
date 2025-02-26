@@ -95,6 +95,7 @@ public class BoardManager {
         board.move = 0;
         board.value = heuristics2(board);
         board.moveList = null;
+        board.lastMove = board.empty;
     }
 
     public String toString(Board board) {

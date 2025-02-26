@@ -14,6 +14,7 @@ public class App {
     public static void greedyBestFirst(BoardManager manager, Board board) {
         LinkedListArray queue = new LinkedListArray(1000);
         queue.add(board);
+        Board start = new Board(board);
         // PriorityQueue<Board> queue = new PriorityQueue<>(Comparator.comparingInt(Board::value));
         // queue.add(board);
         while (!queue.isEmpty()) {
@@ -24,7 +25,7 @@ public class App {
                 System.out.println("Frontier: " + queue.size());
 
                 System.out.println("Recreating board");
-                Board recreated = current.moveList.recreateBoard(manager, board);
+                Board recreated = current.moveList.recreateBoard(manager, start);
                 System.out.println(manager.toString(recreated));
                 return;
             }
