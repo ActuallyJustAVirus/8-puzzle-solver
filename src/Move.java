@@ -9,6 +9,10 @@ public class Move {
 
     public Board recreateBoard(BoardManager manager, Board board) {
         if (parent == null) {
+            if (board.getClass() == ForceShowBoard.class) {
+                board.move(move);
+                return board;
+            }
             return manager.createBoardByMove(board, move);
         }
         Board newBoard = parent.recreateBoard(manager, board);

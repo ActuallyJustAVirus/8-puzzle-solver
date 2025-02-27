@@ -21,7 +21,7 @@ public class Solver {
         board = new Board(start);
     }
 
-    public void solve() {
+    public boolean solve() {
         queue.add(board);
         while (!queue.isEmpty()) {
             board = queue.poll();
@@ -33,7 +33,7 @@ public class Solver {
                 System.out.println("Recreating board");
                 Board recreated = board.moveList.recreateBoard(manager, start);
                 System.out.println(manager.toString(recreated));
-                return;
+                return true;
             }
             int[] possibleMoves = manager.moves[board.empty];
             for (int i = 0; i < possibleMoves.length; i++) {
@@ -55,6 +55,7 @@ public class Solver {
             }
         }
         System.out.println("No solution found (queue empty)");
+        return false;
     }
 
     public void printBoard() {
