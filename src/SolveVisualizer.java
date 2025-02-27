@@ -2,39 +2,38 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
-import javax.swing.JWindow;
+import javax.swing.JFrame;
 
 public class SolveVisualizer {
     Solver solver;
-    JWindow window;
+    JFrame window;
     
     public SolveVisualizer(int x, int y) {
         solver = new Solver(x, y);
-        solver.randomize();
-        window = new JWindow();
+        window = new JFrame();
         window.add(new Canvas(solver));
         window.setSize(x * 100, y * 100);
         window.setVisible(true);
-        // window.repaint();
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+    
+    public static void main(String[] args) {
+        SolveVisualizer visualizer = new SolveVisualizer(4, 4);
+        visualizer.solver.randomize();
         Thread thread = new Thread(() -> {
-            solver.solve();
+            visualizer.solver.solve();
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {}
             System.exit(0);
         });
         thread.start();
-
         for (int i = 0; i < 1000; i++) {
             try {
                 Thread.sleep(20);
             } catch (InterruptedException e) {}
-            window.repaint();
+            visualizer.window.repaint();
         }
-    }
-
-    public static void main(String[] args) {
-        new SolveVisualizer(4, 4);
     }
 }
 
