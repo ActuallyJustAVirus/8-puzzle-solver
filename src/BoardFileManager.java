@@ -7,8 +7,8 @@ import java.io.ObjectOutputStream;
 public class BoardFileManager {
 
     public static void main(String[] args) {
-        // Board[] boards = new Board[100000];
         Solver solver = new Solver(3, 3);
+        // Board[] boards = new Board[200000];
         // for (int i = 0; i < boards.length; i++) {
         //     solver.randomize();
         //     boards[i] = new Board(solver.start);
@@ -17,8 +17,7 @@ public class BoardFileManager {
         Board[] loaded = loadBoardList("boards.ser");
         long start = System.currentTimeMillis();
         for (int i = 0; i < loaded.length; i++) {
-            solver.start = loaded[i];
-            solver.board = new Board(loaded[i]);
+            solver.setBoard(loaded[i]);
             solver.solve();
         }
         long end = System.currentTimeMillis();

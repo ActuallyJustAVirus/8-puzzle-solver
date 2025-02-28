@@ -48,6 +48,14 @@ public class LinkedListArray {
         return array[min].poll();
     }
 
+    public void clear() {
+        removeThreshold = array.length;
+        for (int i = 0; i < array.length; i++) {
+            array[i].clear();
+        }
+        size = 0;
+    }
+
     public boolean isEmpty() {
         return size == 0;
     }

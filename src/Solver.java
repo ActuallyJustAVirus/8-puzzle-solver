@@ -15,10 +15,22 @@ public class Solver {
         board = new Board(start);
     }
 
-    public void randomize() {
+    public void setBoard(Board board) {
+        this.board = board;
+        this.start = new Board(board);
+        queue.clear();
+    }
+
+    public void newBoard() {
         start = new Board(x, y);
-        manager.randomize(start);
         board = new Board(start);
+        queue.clear();
+    }
+
+    public void randomize() {
+        manager.randomize(board);
+        start = new Board(board);
+        queue.clear();
     }
 
     public boolean solve() {
@@ -26,13 +38,13 @@ public class Solver {
         while (!queue.isEmpty()) {
             board = queue.poll();
             if (manager.solved(board)) {
-                System.out.println(manager.toString(board));
-                System.out.println("Solved with " + board.move + " moves");
-                System.out.println("Frontier: " + queue.size());
+                // System.out.println(manager.toString(board));
+                // System.out.println("Solved with " + board.move + " moves");
+                // System.out.println("Frontier: " + queue.size());
 
-                System.out.println("Recreating board");
-                Board recreated = board.moveList.recreateBoard(manager, start);
-                System.out.println(manager.toString(recreated));
+                // System.out.println("Recreating board");
+                // Board recreated = board.moveList.recreateBoard(manager, start);
+                // System.out.println(manager.toString(recreated));
                 return true;
             }
             int[] possibleMoves = manager.moves[board.empty];
