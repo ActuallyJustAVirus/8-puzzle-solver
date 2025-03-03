@@ -1,8 +1,9 @@
+package Board;
 public class BoardManager {
     final int x;
     final int y;
     
-    final int[][] moves;
+    final public int[][] moves;
 
     public BoardManager(int x, int y) {
         this.x = x;

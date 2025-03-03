@@ -2,6 +2,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
+
+import Board.Board;
+
 import javax.swing.JFrame;
 
 public class SolveVisualizer {

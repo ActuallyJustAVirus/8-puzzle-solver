@@ -1,3 +1,5 @@
+package Board;
+
 public class Move {
     Move parent;
     byte move;

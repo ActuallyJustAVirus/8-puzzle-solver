@@ -1,3 +1,6 @@
+package ValueCalculators;
+import Board.Board;
+
 public class AStar extends BoardValueCalculator {
     final byte[][] distances;
 

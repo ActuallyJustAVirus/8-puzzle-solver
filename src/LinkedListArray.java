@@ -1,5 +1,7 @@
 import java.util.LinkedList;
 
+import Board.Board;
+
 public class LinkedListArray {
     LinkedList<Board>[] array;
     int min;

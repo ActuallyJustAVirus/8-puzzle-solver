@@ -1,11 +1,12 @@
+package Board;
 import java.io.Serializable;
 
 public class Board implements Serializable {
-    byte[] board;
-    int empty;
-    int move = 0;
-    int lastMove;
-    Move moveList;
+    public byte[] board;
+    public int empty;
+    public int move = 0;
+    public int lastMove;
+    public Move moveList;
 
     public Board(int x, int y) {
         this.board = new byte[x * y];
@@ -32,5 +33,9 @@ public class Board implements Serializable {
         empty = i;
         move++;
         moveList = new Move(moveList, (byte) i);
+    }
+
+    public int getMove() {
+        return move;
     }
 }

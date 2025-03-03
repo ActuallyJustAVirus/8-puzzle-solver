@@ -1,3 +1,8 @@
+import Board.Board;
+import Board.BoardManager;
+import ValueCalculators.AStar;
+import ValueCalculators.BoardValueCalculator;
+
 public class Solver {
     BoardManager manager;
     BoardValueCalculator calculator;

@@ -1,3 +1,5 @@
+import Board.Board;
+
 public class App {
     public static void main(String[] args) throws Exception {
         int[][] cases = {
@@ -18,8 +20,8 @@ public class App {
                 solver.setBoard(boards[i]);
                 if (solver.solve()) {
                     totalSolved++;
-                    moves[i] = solver.board.move;
-                    totalMoves += solver.board.move;
+                    moves[i] = solver.board.getMove();
+                    totalMoves += solver.board.getMove();
                 }
             }
             long end = System.currentTimeMillis();

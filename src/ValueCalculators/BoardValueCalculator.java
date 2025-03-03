@@ -1,3 +1,6 @@
+package ValueCalculators;
+import Board.Board;
+
 public abstract class BoardValueCalculator {
     final int x;
     final int y;

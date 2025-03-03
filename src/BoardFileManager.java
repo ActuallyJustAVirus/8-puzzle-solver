@@ -4,15 +4,20 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import Board.Board;
+import Board.BoardManager;
+
 public class BoardFileManager {
 
     public static void main(String[] args) {
-        BoardManager manager = new BoardManager(5, 5);
+        int x = 5;
+        int y = 5;
+        BoardManager manager = new BoardManager(x, y);
         Board[] boards = new Board[100];
         for (int i = 0; i < boards.length; i++) {
             boards[i] = manager.createRandomBoard();
         }
-        saveBoardList(boards, "100"+manager.x+"x"+manager.y+".ser");
+        saveBoardList(boards, "100"+x+"x"+y+".ser");
         // Solver solver = new Solver(3, 3);
         // Board[] loaded = loadBoardList("boards.ser");
         // long start = System.currentTimeMillis();
