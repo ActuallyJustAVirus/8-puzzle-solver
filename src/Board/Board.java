@@ -18,6 +18,17 @@ public class Board implements Serializable {
         this.lastMove = empty;
     }
 
+    public Board(byte[] board) {
+        this.board = board.clone();
+        for (int i = 0; i < board.length; i++) {
+            if (board[i] == 0) {
+                empty = i;
+                break;
+            }
+        }
+        this.lastMove = empty;
+    }
+
     public Board(Board board) {
         this.board = board.board.clone();
         this.empty = board.empty;
@@ -33,6 +44,11 @@ public class Board implements Serializable {
         empty = i;
         move++;
         moveList = new Move(moveList, (byte) i);
+    }
+
+    public byte[] getBoard() {
+        board[empty] = 0;
+        return board;
     }
 
     public int getMove() {

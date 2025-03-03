@@ -10,14 +10,21 @@ import Board.BoardManager;
 public class BoardFileManager {
 
     public static void main(String[] args) {
-        int x = 5;
-        int y = 5;
-        BoardManager manager = new BoardManager(x, y);
-        Board[] boards = new Board[100];
-        for (int i = 0; i < boards.length; i++) {
-            boards[i] = manager.createRandomBoard();
+        int[][] cases = {
+            {3, 3},
+            {3, 4},
+            {4, 4},
+            {4, 5},
+            {5, 5},
+        };
+        for (int[] c : cases) {
+            BoardManager manager = new BoardManager(c[0], c[1]);
+            Board[] boards = new Board[100];
+            for (int i = 0; i < boards.length; i++) {
+                boards[i] = manager.createRandomBoard();
+            }
+            saveBoardList(boards, "100"+c[0]+"x"+c[1]+".ser");
         }
-        saveBoardList(boards, "100"+x+"x"+y+".ser");
         // Solver solver = new Solver(3, 3);
         // Board[] loaded = loadBoardList("boards.ser");
         // long start = System.currentTimeMillis();
@@ -36,7 +43,7 @@ public class BoardFileManager {
         try {
             FileOutputStream fileOut = new FileOutputStream(filename);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(board);
+            out.writeObject(board.getBoard());
             out.close();
             fileOut.close();
         } catch (IOException e) {
@@ -48,7 +55,11 @@ public class BoardFileManager {
         try {
             FileOutputStream fileOut = new FileOutputStream(filename);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(boards);
+            byte[][] boardList = new byte[boards.length][];
+            for (int i = 0; i < boards.length; i++) {
+                boardList[i] = boards[i].getBoard();
+            }
+            out.writeObject(boardList);
             out.close();
             fileOut.close();
         } catch (IOException e) {
@@ -61,7 +72,8 @@ public class BoardFileManager {
         try {
             FileInputStream fileIn = new FileInputStream(filename);
             ObjectInputStream in = new ObjectInputStream(fileIn);
-            board = (Board) in.readObject();
+            byte[] boardArray = (byte[]) in.readObject();
+            board = new Board(boardArray);
             in.close();
             fileIn.close();
         } catch (IOException | ClassNotFoundException e) {
@@ -75,7 +87,11 @@ public class BoardFileManager {
         try {
             FileInputStream fileIn = new FileInputStream(filename);
             ObjectInputStream in = new ObjectInputStream(fileIn);
-            boards = (Board[]) in.readObject();
+            byte[][] boardList = (byte[][]) in.readObject();
+            boards = new Board[boardList.length];
+            for (int i = 0; i < boardList.length; i++) {
+                boards[i] = new Board(boardList[i]);
+            }
             in.close();
             fileIn.close();
         } catch (IOException | ClassNotFoundException e) {
