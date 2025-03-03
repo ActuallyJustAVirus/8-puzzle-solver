@@ -30,9 +30,9 @@ public class LinkedListArray {
                 continue;
             }
             array[removeThreshold].clear();
-            System.gc();
-            System.out.println("Removed " + removeThreshold);
-            System.out.println("Size: " + size);
+            // System.gc();
+            // System.out.println("Removed " + removeThreshold);
+            // System.out.println("Size: " + size);
         }
     }
 

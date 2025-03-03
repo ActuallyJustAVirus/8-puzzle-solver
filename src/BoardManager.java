@@ -34,6 +34,12 @@ public class BoardManager {
         return moves;
     }
 
+    public Board createRandomBoard() {
+        Board board = new Board(x, y);
+        randomize(board);
+        return board;
+    }
+
     public Board createBoardByMove(Board board, int i) {
         Board next = new Board(board);
         makeMove(next, i);
@@ -57,10 +63,16 @@ public class BoardManager {
     }
 
     public void randomize(Board board) {
+        int lastMove = board.empty;
         for (int i = 0; i < 1000; i++) {
             int[] possibleMoves = moves[board.empty];
             int move = possibleMoves[(int) (Math.random() * possibleMoves.length)];
+            if (move == lastMove) {
+                i--;
+                continue;
+            }
             board.move(move);
+            lastMove = move;
         }
         board.move = 0;
         board.moveList = null;

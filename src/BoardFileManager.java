@@ -7,24 +7,24 @@ import java.io.ObjectOutputStream;
 public class BoardFileManager {
 
     public static void main(String[] args) {
-        Solver solver = new Solver(3, 3);
-        // Board[] boards = new Board[200000];
-        // for (int i = 0; i < boards.length; i++) {
-        //     solver.randomize();
-        //     boards[i] = new Board(solver.start);
-        // }
-        // saveBoardList(boards, "boards.ser");
-        Board[] loaded = loadBoardList("boards.ser");
-        long start = System.currentTimeMillis();
-        int totalMoves = 0;
-        for (int i = 0; i < loaded.length; i++) {
-            solver.setBoard(loaded[i]);
-            solver.solve();
-            totalMoves += solver.board.move;
+        BoardManager manager = new BoardManager(5, 5);
+        Board[] boards = new Board[100];
+        for (int i = 0; i < boards.length; i++) {
+            boards[i] = manager.createRandomBoard();
         }
-        long end = System.currentTimeMillis();
-        System.out.println("Time: " + (end - start) + "ms");
-        System.out.println("Total moves: " + totalMoves);
+        saveBoardList(boards, "100"+manager.x+"x"+manager.y+".ser");
+        // Solver solver = new Solver(3, 3);
+        // Board[] loaded = loadBoardList("boards.ser");
+        // long start = System.currentTimeMillis();
+        // int totalMoves = 0;
+        // for (int i = 0; i < loaded.length; i++) {
+        //     solver.setBoard(loaded[i]);
+        //     solver.solve();
+        //     totalMoves += solver.board.move;
+        // }
+        // long end = System.currentTimeMillis();
+        // System.out.println("Time: " + (end - start) + "ms");
+        // System.out.println("Total moves: " + totalMoves);
     }
 
     public static void saveBoard(Board board, String filename) {
