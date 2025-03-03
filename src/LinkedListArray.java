@@ -32,7 +32,7 @@ public class LinkedListArray {
                 continue;
             }
             array[removeThreshold].clear();
-            // System.gc();
+            System.gc();
             // System.out.println("Removed " + removeThreshold);
             // System.out.println("Size: " + size);
         }
@@ -53,6 +53,9 @@ public class LinkedListArray {
         removeThreshold = array.length;
         for (int i = 0; i < array.length; i++) {
             array[i].clear();
+        }
+        if (size > 100000) {
+            System.gc();
         }
         size = 0;
     }
