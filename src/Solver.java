@@ -1,5 +1,6 @@
 public class Solver {
     BoardManager manager;
+    BoardValueCalculator calculator;
     LinkedListArray queue;
     Board start;
     Board board;
@@ -10,6 +11,7 @@ public class Solver {
         this.x = x;
         this.y = y;
         manager = new BoardManager(x, y);
+        calculator = new AStar(x, y);
         queue = new LinkedListArray(1000);
         start = new Board(x, y);
         board = new Board(start);
@@ -34,17 +36,10 @@ public class Solver {
     }
 
     public boolean solve() {
-        queue.add(board);
+        queue.add(board, calculator.calculateValue(board));
         while (!queue.isEmpty()) {
             board = queue.poll();
             if (manager.solved(board)) {
-                // System.out.println(manager.toString(board));
-                // System.out.println("Solved with " + board.move + " moves");
-                // System.out.println("Frontier: " + queue.size());
-
-                // System.out.println("Recreating board");
-                // Board recreated = board.moveList.recreateBoard(manager, start);
-                // System.out.println(manager.toString(recreated));
                 return true;
             }
             int[] possibleMoves = manager.moves[board.empty];
@@ -59,14 +54,9 @@ public class Solver {
                 } else {
                     next = manager.createBoardByMove(board, move);
                 }
-                queue.add(next);
-                if (queue.size() > 100000000) {
-                    System.out.println("No solution found (queue size exceeded)");
-                    System.exit(0);
-                }
+                queue.add(next, calculator.calculateValue(next));
             }
         }
-        System.out.println("No solution found (queue empty)");
         return false;
     }
 

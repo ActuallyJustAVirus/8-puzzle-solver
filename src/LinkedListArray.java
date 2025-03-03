@@ -17,13 +17,12 @@ public class LinkedListArray {
         size = 0;
     }
 
-    public void add(Board board) {
-        int index = board.value;
-        if (index >= removeThreshold) {
+    public void add(Board board, int value) {
+        if (value >= removeThreshold) {
             return;
         }
-        array[index].add(board);
-        min = Math.min(min, index);
+        array[value].add(board);
+        min = Math.min(min, value);
         size++;
         while (size > cap) {
             size -= array[--removeThreshold].size();

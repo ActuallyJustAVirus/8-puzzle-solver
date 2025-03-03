@@ -5,7 +5,6 @@ public class Board implements Serializable {
     int empty;
     int move = 0;
     int lastMove;
-    int value;
     Move moveList;
 
     public Board(int x, int y) {
@@ -23,7 +22,6 @@ public class Board implements Serializable {
         this.empty = board.empty;
         this.move = board.move;
         this.lastMove = board.lastMove;
-        this.value = board.value;
         this.moveList = board.moveList;
     }
 

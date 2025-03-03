@@ -16,12 +16,15 @@ public class BoardFileManager {
         // saveBoardList(boards, "boards.ser");
         Board[] loaded = loadBoardList("boards.ser");
         long start = System.currentTimeMillis();
+        int totalMoves = 0;
         for (int i = 0; i < loaded.length; i++) {
             solver.setBoard(loaded[i]);
             solver.solve();
+            totalMoves += solver.board.move;
         }
         long end = System.currentTimeMillis();
         System.out.println("Time: " + (end - start) + "ms");
+        System.out.println("Total moves: " + totalMoves);
     }
 
     public static void saveBoard(Board board, String filename) {

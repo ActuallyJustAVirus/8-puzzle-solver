@@ -3,23 +3,11 @@ public class BoardManager {
     final int y;
     
     final int[][] moves;
-    final byte[][] distances;
 
     public BoardManager(int x, int y) {
         this.x = x;
         this.y = y;
         this.moves = calculateMoves();
-        this.distances = calculateDistances();
-    }
-
-    private byte[][] calculateDistances() {
-        byte[][] distances = new byte[x * y][x * y];
-        for (int i = 0; i < distances.length; i++) {
-            for (int j = 0; j < distances[i].length; j++) {
-                distances[i][j] = (byte) (Math.abs(i % x - j % x) + Math.abs(i / x - j / x));
-            }
-        }
-        return distances;
     }
 
     private int[][] calculateMoves() {
@@ -54,36 +42,18 @@ public class BoardManager {
 
     public void makeMove(Board board, int i) {
         board.move(i);
-        heuristics2(board);
-    }
-
-    public int heuristics1(Board board) {
-        int result = board.board.length - 1;
-        for (int i = 0; i < board.board.length; i++) {
-            if (i == board.empty) {
-                continue;
-            }
-            if (board.board[i] == i - 128) {
-                result--;
-            }
-        }
-        return result;
-    }
-
-    public int heuristics2(Board board) {
-        int result = 0;
-        for (int i = 0; i < board.board.length; i++) {
-            if (i == board.empty) {
-                continue;
-            }
-            result += distances[i][board.board[i] + 128];
-        }
-        board.value = result + board.move;
-        return result;
     }
 
     public boolean solved(Board board) {
-        return heuristics1(board) == 0;
+        for (int i = 0; i < board.board.length; i++) {
+            if (i == board.empty) {
+                continue;
+            }
+            if (board.board[i] != i - 128) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void randomize(Board board) {
@@ -93,7 +63,6 @@ public class BoardManager {
             board.move(move);
         }
         board.move = 0;
-        board.value = heuristics2(board);
         board.moveList = null;
         board.lastMove = board.empty;
     }

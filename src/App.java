@@ -3,6 +3,11 @@ public class App {
         Solver solver = new Solver(4, 4);
         solver.randomize();
         solver.printBoard();
-        solver.solve();        
+        if (solver.solve()) {
+            System.out.println("Solved!");
+        } else {
+            System.out.println("Not solved!");
+        }
+        solver.printBoard();
     }
 }
